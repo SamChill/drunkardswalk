@@ -28,3 +28,9 @@ types such as float and double or the extended precision types in QD.
 [eon]: http://theory.cm.utexas.edu/eon/
 [qd]: http://crd-legacy.lbl.gov/~dhbailey/mpdist/
 [eigen]: http://eigen.tuxfamily.org/
+
+Installation
+------------
+
+Drunkard's walk requires GNU Make and a C++ compiler. 
+It currently has only been testing with the GNU C++ compiler and should work with version 4.1 or newer.
