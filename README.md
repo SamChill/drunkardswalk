@@ -58,3 +58,49 @@ Testing
 Running the tests requires Python 2.4 or newer and numpy. The Python bindings do not have to be installed first.
 The tests are located in the `tests/` subdirectory.
 It is recommended to run the test `simple.py` to ensure that everything is working.
+
+Example
+-------
+
+Here is an example of solving the drunkard's walk problem in python.
+
+```python
+from drunkardswalk import solve_amc
+import numpy
+
+#define the transient matrix
+Q = numpy.array([ [0.0, 0.5, 0.0],
+                  [0.5, 0.0, 0.5],
+                  [0.0, 0.5, 0.0] ])
+
+#define the recurrant matrix
+R = numpy.array([ [0.5, 0.0],
+                  [0.0, 0.0],
+                  [0.0, 0.5] ])
+
+#define vector of times for transient states
+c = numpy.array([1.0, 1.0, 1.0])
+
+#choose precision to solve problem in
+#here we choose double double precision
+prec = 'dd'
+
+#solve for the time spent in each transient state (t)
+#and the matrix of absorption probabilities (B)
+#also returns a measure of the error in the solution (residual)
+t, B, residual = solve_amc(Q,R,c,prec)
+
+print "times:"
+print t
+print 'absorption probabilities:'
+print B
+```
+The following output is produced:
+```
+times:
+[3.0, 4.0, 3.0]
+absorption probabilities:
+[[ 0.75  0.25]
+ [ 0.5   0.5 ]
+ [ 0.25  0.75]]
+```
