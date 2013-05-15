@@ -2,7 +2,9 @@ Drunkard's Walk
 ===============
 
 Drunkard's walk is a library for calculating the expected number of steps (or time) 
-until absorption and the absorption probabilities of an absorbing Markov chain.
+until absorption and the absorption probabilities of an [absorbing Markov chain][amc].
+The name is a reference to a type of [random walk][randomwalk]
+that can be modeled with absorbing Markov chains.
 
 Currently the Drunkard's Walk library is used in [Eon][eon], which is a software package
 for atomistic modeling of long timescale problems in materials. By using the extended
@@ -21,6 +23,8 @@ The core of the code is written using [Eigen][eigen], which is a C++ template li
 for linear algebra. As it is a template library, it supports working with different scalar
 types such as float and double or the extended precision types in QD.
 
+[amc]: http://en.wikipedia.org/wiki/Absorbing_Markov_chain
+[randomwalk]: http://en.wikipedia.org/wiki/Random_walk
 [eon]: http://theory.cm.utexas.edu/eon/
 [qd]: http://crd-legacy.lbl.gov/~dhbailey/mpdist/
 [eigen]: http://eigen.tuxfamily.org/
