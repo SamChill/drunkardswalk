@@ -16,8 +16,8 @@ The main feature of the library is that it supports extended precision floating 
 using the [QD library][qd] developed by David H. Bailey et al., 
 which supports double double (~32 decimal digits) and quad double (~64 decimal digits) 
 floating point types. The reason for using QD instead of an arbitrary precision math library, 
-is that QD is very fast. By using these extended precision types, one is able to solve
-problems where the absorptions probabilities are extremely small.
+is that QD is very fast. By using these extended precision types, one is able to accurately solve
+problems where the absorptions probabilities are vanishingly small.
 
 The core of the code is written using [Eigen][eigen], which is a C++ template library
 for linear algebra. As it is a template library, it supports working with different scalar
