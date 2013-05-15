@@ -55,6 +55,6 @@ This can be done in the bash shell with `export DRUNKARDSWALK_LIB=/path/to/lib/l
 Testing
 -------
 
-Running the tests requires Python 2.4 or newer and numpy. The tests are located in the `tests/` subdirectory.
+Running the tests requires Python 2.4 or newer and numpy. The Python bindings do not have to be installed first.
+The tests are located in the `tests/` subdirectory.
 It is recommended to run the test `simple.py` to ensure that everything is working.
-The tests require that Python and NumPy are installed.
