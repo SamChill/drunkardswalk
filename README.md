@@ -17,7 +17,7 @@ using the [QD library][qd] developed by David H. Bailey et al.,
 which supports double double (~32 decimal digits) and quad double (~64 decimal digits) 
 floating point types. The reason for using QD instead of an arbitrary precision math library, 
 is that QD is very fast. By using these extended precision types, one is able to accurately solve
-problems where the absorptions probabilities are vanishingly small.
+problems where the absorption probabilities are vanishingly small.
 
 The core of the code is written using [Eigen][eigen], which is a C++ template library
 for linear algebra. As it is a template library, it supports working with different scalar
@@ -42,7 +42,10 @@ Installing the library is done with `make install`. By default it is installed t
 `/usr/local/lib`, however if you would like to install to a different location
 that can be done with `make install PREFIX=/some/other/path`.
 
-The python bindings can be installed using the include `setup.py` located
+Python Bindings
+---------------
+
+The python bindings can be installed using the included `setup.py` located
 in the `python` directory. By default the library searches standard
 locations for the compiled shared library installed in the previous step.
 If the library has been installed to a custom directory, the path to the
@@ -52,4 +55,6 @@ This can be done in the bash shell with `export DRUNKARDSWALK_LIB=/path/to/lib/l
 Testing
 -------
 
-Running the tests requires Python 2.4 or newer and numpy. The tests are located in the `tests/` subdirectory.
+Running the tests requires Python 2.4 or newer and numpy. The Python bindings do not have to be installed first.
+The tests are located in the `tests/` subdirectory.
+It is recommended to run the test `simple.py` to ensure that everything is working.
