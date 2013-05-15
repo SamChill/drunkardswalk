@@ -3,11 +3,13 @@ LDFLAGS=../deps/qd/src/libqd.a
 
 all: libdrunkardswalk.so libdrunkardswalk.a
 
+drunkardswalk.o: ../include/drunkardswalk/solve.h
+
 libdrunkardswalk.so: drunkardswalk.o ../deps/qd/src/libqd.a
-	$(CXX) -shared -o $@ libdrunkardswalk.o $(CXXFLAGS) $(LDFLAGS) $(CPPFLAGS)
+	$(CXX) -shared -o $@ drunkardswalk.o $(CXXFLAGS) $(LDFLAGS) $(CPPFLAGS)
 
 libdrunkardswalk.a: drunkardswalk.o ../deps/qd/src/libqd.a
-	ar rcs $@ libdrunkardswalk.o 
+	ar rcs $@ drunkardswalk.o 
 
 .PHONY: clean
 

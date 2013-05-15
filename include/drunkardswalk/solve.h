@@ -56,7 +56,7 @@ template<typename scalar> void solve_amc(int Qsize, double* Qflat, int Rcols,
     VectorXdd t_calc = lu.solve(c);
     MatrixXdd B_calc = lu.solve(R);
 
-    *residual = (double)(A*t_calc-c).maxCoeff();
+    *residual = (double)(A*t_calc-c).array().abs().maxCoeff();
 
     // Store the solution t_calc into the array t.
     for (i = 0; i < Qsize; i++) {
