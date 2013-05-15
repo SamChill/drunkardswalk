@@ -8,14 +8,21 @@ from os.path import join, abspath, dirname, isfile
 
 libpath = None
 if 'DRUNKARDSWALK_LIB' in environ:
+    #env var takes precidence
     libpath = environ['DRUNKARDSWALK_LIB']
 else:
+    #look in the directory that this file is in
     libpath = join(dirname(abspath(__file__)), 'libdrunkardswalk.so')
+    #search standard places
     if not isfile(libpath):
         libpath = ctypes.util.find_library('drunkardswalk')
+    #also make sure to check /usr/local/lib
+    if libpath == None and isfile('/usr/local/lib/libdrunkardswalk.so'):
+        libpath = '/usr/local/lib/libdrunkardswalk.so'
 if libpath == None:
     stderr.write('ERROR: unable to locate libdrunkardswalk.so\n')
     stderr.write('       either install to a standard location\n')
+    stderr.write('       such as /usr/lib or /usr/local/lib\n')
     stderr.write('       or set the environment variable DRUNKARDSWALK_LIB\n')
     exit(1)
 
