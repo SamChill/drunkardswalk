@@ -23,28 +23,12 @@ def main():
     Ntrans = 200
     Nabs = 50
 
-    print 'PRECISION TESTING'
+    print 'PERFORMANCE TESTS'
     print '-----------------'
-    print 'Solving MCAMC problem with %i transient states and %i absorbing states' % (Ntrans, Nabs)
-    print 'error measured as the residual in the solution of the escape times:'
-    print u'residual = ||(1-Q)*t - c||_\u221E'
+    print 'Generating a random chain with N transient states and 50 absorbing states'
+    print 'times are in seconds\n'
 
-    print '%5s %5s %5s %5s %5s' % ('p', 'f', 'd', 'dd', 'qd')
-    for p in [1e-5,1e-8,1e-10,1e-15,1e-25,1e-28,1e-30,1e-40,1e-50,1e-60,1e-70]:
-        errors = []
-        for prec in ['f','d','dd','qd']:
-            Q,R,c = random_chain(Ntrans,Nabs,p)
-            t, B, res = solve_amc(Q,R,c,prec)
-            errors.append(res)
-        fmt = '%5.0e %5.0e %5.0e %5.0e %5.0e' 
-        print fmt % (p,errors[0],errors[1],errors[2],errors[3])
-
-    import sys;sys.exit(0)
-
-    print '\nPERFORMANCE TESTING'
-    print '-------------------'
-
-    print '%8s %8s %8s %8s %8s' % ('N', 'f', 'd', 'dd', 'qd')
+    print '%8s %8s %8s %8s %8s' % ('N', 'float', 'double', 'dd_real', 'qd_real')
     for Ntrans in [10,100,200,500,800]:
         times = []
         for prec in ['f','d','dd','qd']:

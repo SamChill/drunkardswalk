@@ -31,18 +31,24 @@ def main():
     n=64
     Q,R,c = dw(n)
 
-    failure = False
+    failures = 0
+    prec_to_name = {'f':'float','d':'double','dd':'dd_real','qd':'qd_real'}
+    tol = {'f':1e-5,'d':1e-10,'dd':1e-20,'qd':1e-40}
     for prec in ['f','d','dd','qd']:
-        print 'testing precision %s' % prec
+        print 'testing %s:' % prec_to_name[prec]
         t, B, res = solve_amc(Q,R,c,prec)
         residual = numpy.max(numpy.abs(B-soln(n)))
-        if residual > 1e-5:
-            print 'residual: %.3e test failed for prec %s' % (residual,prec)
-            failure = True
+        if residual > tol[prec]:
+            print '        residual: %.3e > %.3e' % (residual, tol[prec])
+            print '        test failed'
+            failures += 1
         else:
-            print 'residual: %.3e test passed for prec %s' % (residual,prec)
+            print '        residual: %.3e < %.3e' % (residual, tol[prec])
+            print '        test passed'
 
-        if failure:
-            sys.exit(1)
+    print 'ran 4 tests'
+    print '%i failures' % failures
+    if failures > 0:
+        sys.exit(1)
 
 main()
