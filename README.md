@@ -38,6 +38,17 @@ It currently has only been testing with the GNU C++ compiler and should work wit
 Compiling the library should be as simple as running `make`. 
 The top level makefile can be edited to use different compiler options.
 
+Installing the library is done with `make install`. By default it is installed to
+`/usr/local/lib`, however if you would like to install to a different location
+that can be done with `make install PREFIX=/some/other/path`.
+
+The python bindings can be installed using the include `setup.py` located
+in the `python` directory. By default the library searches standard
+locations for the compiled shared library installed in the previous step.
+If the library has been installed to a custom directory, the path to the
+library needs to be set the enironment variable `DRUNKARDSWALK_LIB`.
+This can be done in the bash shell with `export DRUNKARDSWALK_LIB=/path/to/lib/libdrunkardswalk.so`.
+
 Testing
 -------
 
