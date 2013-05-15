@@ -28,12 +28,21 @@ def soln(n):
     return numpy.array(B)
 
 def main():
-    prec = 'dd'
-    n=1e300
+    n=64
     Q,R,c = dw(n)
-    t, B, res = solve_amc(Q,R,c,prec)
 
-    residual = numpy.max(numpy.abs(B-soln(n)))
-    print "%.3e" % residual
+    failure = False
+    for prec in ['f','d','dd','qd']:
+        print 'testing precision %s' % prec
+        t, B, res = solve_amc(Q,R,c,prec)
+        residual = numpy.max(numpy.abs(B-soln(n)))
+        if residual > 1e-5:
+            print 'residual: %.3e test failed for prec %s' % (residual,prec)
+            failure = True
+        else:
+            print 'residual: %.3e test passed for prec %s' % (residual,prec)
+
+        if failure:
+            sys.exit(1)
 
 main()
