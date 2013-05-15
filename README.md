@@ -37,3 +37,8 @@ It currently has only been testing with the GNU C++ compiler and should work wit
 
 Compiling the library should be as simple as running `make`. 
 The top level makefile can be edited to use different compiler options.
+
+Testing
+-------
+
+Running the tests requires Python 2.4 or newer and numpy. The tests are located in the `tests/` subdirectory.
