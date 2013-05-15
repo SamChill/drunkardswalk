@@ -11,6 +11,9 @@ export CXX CXXFLAGS
 
 all: deps/qd/src src
 
+test: all
+	$(MAKE) -C test
+
 install: all
 	test -d $(PREFIX) || mkdir $(PREFIX)
 
