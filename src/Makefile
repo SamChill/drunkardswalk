@@ -1,4 +1,5 @@
-CPPFLAGS=-I../deps/eigen -I../deps/qd/include -I../include
+CXXFLAGS?=-O3 -fPIC
+CPPFLAGS+=-I../deps/eigen -I../deps/qd/include -I../include
 LDFLAGS=../deps/qd/src/libqd.a
 
 all: libdrunkardswalk.so libdrunkardswalk.a
