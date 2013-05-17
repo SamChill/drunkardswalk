@@ -1,4 +1,4 @@
-#CXX=g++
+CXX=g++
 CXXFLAGS=-O3 -fPIC 
 #can be compiled with threading
 #CXXFLAGS=-O3 -fPIC -fopenmp
