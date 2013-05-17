@@ -46,13 +46,11 @@ def solve_amc(Q, R, c, prec='dd'):
     B = np.zeros(R.shape)
     t = np.zeros(c.shape)
     residual = np.zeros(1)
-    #c_ptr = ndpointer(dtype=np.float64,flags=('C_CONTIGUOUS','WRITEABLE'))
-    c_ptr = ndpointer()
+
+    c_ptr = ndpointer(dtype=np.float64,flags=('C_CONTIGUOUS','WRITEABLE'))
     solve.argtypes = [ctypes.c_int, c_ptr, ctypes.c_int, c_ptr,
             c_ptr, c_ptr, c_ptr, c_ptr]
-    solve(Q.shape[0], Q, R.shape[1], R, c, B, t, residual)
 
-    #B = np.array(list(Bflat)).reshape(R.shape)
-    #t = list(tflat)
+    solve(Q.shape[0], Q, R.shape[1], R, c, B, t, residual)
 
     return t, B, residual
