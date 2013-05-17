@@ -64,6 +64,25 @@ do not have to be installed first; the tests can be run after running `make`.
 The tests are located in the `tests/` subdirectory. It is recommended to run
 the test `simple.py` to ensure that everything is working.
 
+Performance Benchmark
+---------------------
+
+The wall clock time to for solving an absorbing Markov chain with `N` transient
+states and 50 absorbing states is listed in the table below. This timing data
+was produced from the `performance.py` test script.  The following timing data
+were produced on an 8-core 2.66GHz Intel Xeon X5355 with 8 threads.
+
+|        N |    float |   double |  dd_real |  qd_real |
+|:--------:| --------:| --------:| --------:| --------:|
+|       10 |   0.0003 |   0.0002 |   0.0004 |   0.0018 |
+|      100 |   0.0009 |   0.0011 |   0.0187 |   0.1951 |
+|      200 |   0.0024 |   0.0037 |   0.0735 |   0.8157 |
+|      500 |   0.0203 |   0.0268 |   0.5163 |   6.3047 |
+|      800 |   0.0401 |   0.0647 |   1.5459 |  17.2294 |
+|     1200 |   0.0920 |   0.1477 |   4.2870 |  48.9998 |
+|     1500 |   0.1574 |   0.2332 |   7.7363 |  89.7005 |
+|     2000 |   0.2800 |   0.4583 |  15.9154 | 185.3204 |
+
 Python API
 ----------
 

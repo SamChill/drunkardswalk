@@ -1,7 +1,7 @@
 CXX=g++
-CXXFLAGS=-O3 -fPIC 
+#CXXFLAGS=-O3 -fPIC 
 #can be compiled with threading
-#CXXFLAGS=-O3 -fPIC -fopenmp
+CXXFLAGS=-O3 -fPIC -fopenmp
 
 #intel c++ compiler
 #CXX=icpc
