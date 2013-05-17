@@ -42,6 +42,12 @@ tested with the GNU (version 4.1 or newer) and Intel C++ compilers (version
 Compiling the library should be as simple as running `make`. The top level
 makefile can be edited to use different compilers or compiler options.
 
+OpenMP threading can be enabled by enabling compiler support. With the GNU
+C++ compiler this can be acomplished by added `-fopenmp` to `CXXFLAGS`
+in the top-level makefile. The number of threads can be controlled via
+the environment variable `OMP_NUM_THREADS`. The default compiler flags
+do not enable threading.
+
 Installing the library is done with `make install`. By default it is installed
 to `/usr/local/lib`, however if you would like to install to a different
 location that can be done with `make install PREFIX=/some/other/path`.
