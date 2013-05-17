@@ -36,7 +36,7 @@ Installation
 ------------
 
 Drunkard's walk requires GNU Make and a C++ compiler. It currently has only
-been testing with the GNU C++ compiler and should work with version 4.1 or
+been tested with the GNU C++ compiler and should work with version 4.1 or
 newer.
 
 Compiling the library should be as simple as running `make`. The top level
@@ -69,16 +69,26 @@ Python API
 
 There is just one function provided by the Python bindings:
 
-`t, B = drunkardswalk.solve_amc(Q, R, c, prec='dd')`
+```python
+t, B = drunkardswalk.solve_amc(Q, R, c, prec='dd')
+```
 
 `Q` is a t by t NumPy array of relative transition probabilities
 between transient states, where t is the number transient states.
+
 `R` is a t by r NumPy array of relative absorption probabilities
 from the transient states to the absorbing states, where r is
-the number of absorbing states. `c` is a Numpy array of length
+the number of absorbing states. 
+
+`c` is a Numpy array of length
 t that represents the average time spent in each transient states.
 This could be a vector of ones if one wants to solve for the expected
-number of times the chain is in each transient state.
+number of times the chain is in each transient state. 
+
+`prec` is a string that represents the floating point precision that will
+be used to solve the problem. The options are `f`, `d`, `dd`, and `qd`
+which correspond to single, double, double double, and quad double
+precision respectively.
 
 The function returns a NumPy array of length t that represents the
 expected amount of time spent in each state and a t by r NumPy
