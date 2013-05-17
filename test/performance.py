@@ -10,7 +10,6 @@ environ['DRUNKARDSWALK_LIB'] = \
         join(dirname(abspath(__file__)), '..', 'src', 'libdrunkardswalk.so')
 from drunkardswalk import solve_amc
 
-
 def random_chain(t,r,p):
     Q = numpy.random.random((t,t))
     for i in xrange(len(Q)):
@@ -28,7 +27,9 @@ def main():
     print 'Generating a random chain with N transient states and 50 absorbing states'
     print 'times are in seconds\n'
 
-    print '%8s %8s %8s %8s %8s' % ('N', 'float', 'double', 'dd_real', 'qd_real')
+    print '| %8s | %8s | %8s | %8s | %8s |' % ('N', 'float', 'double', 'dd_real', 'qd_real')
+    print '|:%8s:| %8s:| %8s:| %8s:| %8s:|' % ( 8*'-', 8*'-', 8*'-', 8*'-', 8*'-')
+
     for Ntrans in [10,100,200,500,800]:
         times = []
         for prec in ['f','d','dd','qd']:
@@ -39,7 +40,7 @@ def main():
             t, B, res = solve_amc(Q,R,c,prec)
             t2 = time()
             times.append(t2-t1)
-        fmt = '%8i %8.3f %8.3f %8.3f %8.3f'
+        fmt = '| %8i | %8.4f | %8.4f | %8.4f | %8.4f |'
         print  fmt % (Ntrans,times[0],times[1],times[2],times[3])
 
 main()
