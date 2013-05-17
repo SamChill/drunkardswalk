@@ -67,7 +67,7 @@ the test `simple.py` to ensure that everything is working.
 Performance Benchmark
 ---------------------
 
-The wall clock time to for solving an absorbing Markov chain with `N` transient
+The wall clock time to for solving an absorbing Markov chain with N transient
 states and 50 absorbing states is listed in the table below. This timing data
 was produced from the `performance.py` test script.  The following timing data
 were produced on an 8-core 2.66GHz Intel Xeon X5355 with 8 threads.
