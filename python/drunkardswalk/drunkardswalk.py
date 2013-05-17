@@ -2,6 +2,7 @@
 import ctypes
 import ctypes.util
 import numpy as np
+from numpy.ctypeslib import ndpointer
 from sys import stderr, exit
 from os import environ
 from os.path import join, abspath, dirname, isfile
@@ -29,17 +30,6 @@ if libpath == None:
 libmcamc = ctypes.CDLL(libpath)
 
 def solve_amc(Q, R, c, prec='dd'):
-    Qflat = list(Q.ravel())
-    Qflat = (ctypes.c_double * len(Qflat))(*Qflat)
-    Rflat = list(R.ravel())
-    Rflat = (ctypes.c_double * len(Rflat))(*Rflat)
-    cflat = list(c)
-    cflat = (ctypes.c_double * len(cflat))(*cflat)
-
-    Bflat = (ctypes.c_double * len(Rflat))()
-    tflat = (ctypes.c_double * len(cflat))()
-
-    residual = (ctypes.c_double * 1)()
 
     if prec == 'f':
         solve = libmcamc.solve_amc_float
@@ -52,11 +42,17 @@ def solve_amc(Q, R, c, prec='dd'):
     else:
         raise ValueError('Unknown prec value "%s"' % prec)
     # void solve(int Qsize, double *Qflat, int Rcols, double *Rflat, 
-    #           double *c_in, double *B, double *t)
-    solve(Q.shape[0], Qflat, R.shape[1], Rflat, cflat, Bflat, tflat, residual)
+    #           double *c_in, double *B, double *t, double *residual)
+    B = np.zeros(R.shape)
+    t = np.zeros(c.shape)
+    residual = np.zeros(1)
+    #c_ptr = ndpointer(dtype=np.float64,flags=('C_CONTIGUOUS','WRITEABLE'))
+    c_ptr = ndpointer()
+    solve.argtypes = [ctypes.c_int, c_ptr, ctypes.c_int, c_ptr,
+            c_ptr, c_ptr, c_ptr, c_ptr]
+    solve(Q.shape[0], Q, R.shape[1], R, c, B, t, residual)
 
-    B = np.array(list(Bflat)).reshape(R.shape)
-    t = list(tflat)
-    residual = list(residual)[0]
+    #B = np.array(list(Bflat)).reshape(R.shape)
+    #t = list(tflat)
 
     return t, B, residual
