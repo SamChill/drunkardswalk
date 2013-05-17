@@ -67,8 +67,8 @@ Testing
 
 Running the tests requires Python 2.4 or newer and NumPy. The Python bindings
 do not have to be installed first; the tests can be run after running `make`.
-The tests are located in the `tests/` subdirectory. It is recommended to run
-the test `simple.py` to ensure that everything is working.
+The tests are located in the `tests/` subdirectory. A simple test can be
+executed by running `make test`.
 
 Performance Benchmark
 ---------------------
