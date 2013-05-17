@@ -6,6 +6,7 @@ from numpy.ctypeslib import ndpointer
 from sys import stderr, exit
 from os import environ
 from os.path import join, abspath, dirname, isfile
+import signal
 
 libpath = None
 if 'DRUNKARDSWALK_LIB' in environ:
@@ -30,6 +31,9 @@ if libpath == None:
 libmcamc = ctypes.CDLL(libpath)
 
 def solve_amc(Q, R, c, prec='dd'):
+    #make control-c work when calling c code
+    old_handler = signal.signal(signal.SIGINT, signal.SIG_DFL)
+
 
     if prec == 'f':
         solve = libmcamc.solve_amc_float
@@ -52,5 +56,8 @@ def solve_amc(Q, R, c, prec='dd'):
             c_ptr, c_ptr, c_ptr, c_ptr]
 
     solve(Q.shape[0], Q, R.shape[1], R, c, B, t, residual)
+    
+    #reset signal handler
+    old_handler = signal.signal(signal.SIGINT, old_handler)
 
     return t, B, residual
