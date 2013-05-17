@@ -35,12 +35,12 @@ types in QD.
 Installation
 ------------
 
-Drunkard's walk requires GNU Make and a C++ compiler. It currently has only
-been tested with the GNU C++ compiler and should work with version 4.1 or
-newer.
+Drunkard's walk requires GNU Make and a C++ compiler. It currently has been
+tested with the GNU (version 4.1 or newer) and Intel C++ compilers (version
+13).
 
 Compiling the library should be as simple as running `make`. The top level
-makefile can be edited to use different compiler options.
+makefile can be edited to use different compilers or compiler options.
 
 Installing the library is done with `make install`. By default it is installed
 to `/usr/local/lib`, however if you would like to install to a different
