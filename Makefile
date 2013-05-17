@@ -1,11 +1,17 @@
-CXX=g++
+#CXX=g++
 CXXFLAGS=-O3 -fPIC 
 #can be compiled with threading
 #CXXFLAGS=-O3 -fPIC -fopenmp
 
+#intel c++ compiler
+#CXX=icpc
+#must use -fp-model precise with intel compiler or extended precision 
+#CXXFLAGS=-O2 -fPIC -openmp -fp-model precise -vec-report1
+#AR=xiar
+
 PREFIX?=/usr/local
 
-export CXX CXXFLAGS
+export CXX CXXFLAGS AR
 
 .PHONY: clean deps/qd/src src
 
