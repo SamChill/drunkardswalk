@@ -42,6 +42,10 @@ tested with the GNU (version 4.1 or newer) and Intel C++ compilers (version
 Compiling the library should be as simple as running `make`. The top level
 makefile can be edited to use different compilers or compiler options.
 
+Arbitrary precision support can be enabled by building with 
+`make USE_MPREAL=1`. This requires [MPFR][mpfr] (>= 2.3.1) and 
+[GMP][gmp] (>=4.2.1).
+
 OpenMP threading can be enabled by enabling compiler support. With the GNU
 C++ compiler this can be acomplished by added `-fopenmp` to `CXXFLAGS`
 in the top-level makefile. The number of threads can be controlled via
@@ -51,6 +55,9 @@ do not enable threading.
 Installing the library is done with `make install`. By default it is installed
 to `/usr/local/lib`, however if you would like to install to a different
 location that can be done with `make install PREFIX=/some/other/path`.
+
+[mpfr]:http://www.mpfr.org
+[gmp]:http://gmplib.org
 
 Python Bindings
 ---------------
@@ -76,18 +83,15 @@ Performance Benchmark
 The wall clock time to for solving an absorbing Markov chain with N transient
 states and 50 absorbing states is listed in the table below. This timing data
 was produced from the `performance.py` test script.  The following timing data
-were produced on an 8-core 2.66GHz Intel Xeon X5355 with 8 threads.
+were produced on a 2.8GHz Intel Core 2 Duo using a single thread.
 
-|        N |    float |   double |  double double |  quad double |
-|:--------:| --------:| --------:| --------------:| ------------:|
-|       10 |   0.0003 |   0.0002 |         0.0004 |       0.0018 |
-|      100 |   0.0009 |   0.0011 |         0.0187 |       0.1951 |
-|      200 |   0.0024 |   0.0037 |         0.0735 |       0.8157 |
-|      500 |   0.0203 |   0.0268 |         0.5163 |       6.3047 |
-|      800 |   0.0401 |   0.0647 |         1.5459 |      17.2294 |
-|     1200 |   0.0920 |   0.1477 |         4.2870 |      48.9998 |
-|     1500 |   0.1574 |   0.2332 |         7.7363 |      89.7005 |
-|     2000 |   0.2800 |   0.4583 |        15.9154 |     185.3204 |
+|        N |    float |   double |  dd_real |  qd_real |   mpreal |
+|:--------:| --------:| --------:| --------:| --------:| --------:|
+|       10 |   0.0003 |   0.0002 |   0.0004 |   0.0016 |   0.0083 |
+|      100 |   0.0009 |   0.0011 |   0.0183 |   0.1766 |   1.1042 |
+|      200 |   0.0025 |   0.0039 |   0.0937 |   0.9311 |   5.7583 |
+|      500 |   0.0181 |   0.0356 |   0.9909 |  10.5270 |  66.3824 |
+|      800 |   0.3036 |   0.4350 |   3.8188 |  38.7209 | 249.5223 |
 
 Python API
 ----------
@@ -95,7 +99,7 @@ Python API
 There is just one function provided by the Python bindings:
 
 ```python
-t, B = drunkardswalk.solve_amc(Q, R, c, prec='dd')
+t, B = drunkardswalk.solve_amc(Q, R, c, prec='dd', mpreal_prec=512)
 ```
 
 `Q` is a t by t NumPy array of relative transition probabilities
@@ -111,9 +115,15 @@ This could be a vector of ones if one wants to solve for the expected
 number of times the chain is in each transient state. 
 
 `prec` is a string that represents the floating point precision that will
-be used to solve the problem. The options are `f`, `d`, `dd`, and `qd`
+be used to solve the problem. The options are `f`, `d`, `dd`, and `qd`,
 which correspond to single, double, double double, and quad double
-precision respectively.
+precision respectively. If the library has been compiled with
+`make USE_MPREAL=1` then an addition option is available: `mp`.
+This corresponds to an arbitrary precision type whose precision
+can be specified at runtime.
+
+`mpreal_prec` is the number of bits used to represent the significand 
+when using the `mp` precision type.
 
 The function returns a NumPy array of length t that represents the
 expected amount of time spent in each state and a t by r NumPy

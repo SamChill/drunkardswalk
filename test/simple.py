@@ -7,7 +7,7 @@ module_path = join(dirname(abspath(__file__)), '..', 'python')
 sys.path.insert(0,module_path)
 environ['DRUNKARDSWALK_LIB'] = \
         join(dirname(abspath(__file__)), '..', 'src', 'libdrunkardswalk.so')
-from drunkardswalk import solve_amc
+from drunkardswalk import *
 
 
 def dw(n):
@@ -32,13 +32,20 @@ def main():
     Q,R,c = dw(n)
 
     failures = 0
-    prec_to_name = {'f':'float','d':'double','dd':'dd_real','qd':'qd_real'}
-    tol = {'f':1e-5,'d':1e-10,'dd':1e-20,'qd':1e-40}
-    for prec in ['f','d','dd','qd']:
+
+    prec_to_name = {'f':'float','d':'double','dd':'dd_real','qd':'qd_real',
+            'mp':'mpreal'}
+    precs = ['f','d','dd','qd']
+    if MPREAL_SUPPORT:
+        precs.append('mp')
+
+    tol = {'f':1e-5,'d':1e-10,'dd':1e-20,'qd':1e-40,'mp':1e-80}
+
+    for prec in precs:
         print 'testing %s:' % prec_to_name[prec]
-        t, B, res = solve_amc(Q,R,c,prec)
+        t, B, res = solve_amc(Q,R,c,prec,mpreal_prec=512)
         residual = numpy.max(numpy.abs(B-soln(n)))
-        if residual > tol[prec]:
+        if res > tol[prec] or not numpy.isfinite(res):
             print '        residual: %.3e > %.3e' % (residual, tol[prec])
             print '        test failed'
             failures += 1
@@ -46,7 +53,7 @@ def main():
             print '        residual: %.3e < %.3e' % (residual, tol[prec])
             print '        test passed'
 
-    print 'ran 4 tests'
+    print 'ran %i tests' % len(precs)
     print '%i failures' % failures
     if failures > 0:
         sys.exit(1)

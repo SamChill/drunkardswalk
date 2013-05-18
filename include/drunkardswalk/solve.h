@@ -10,6 +10,11 @@ extern "C" {
             double*, double*, double*);
     void solve_amc_qdreal(int, double*, int, double*, double*, double*, 
             double*, double*);
+#ifdef USE_MPREAL
+    void set_mpreal_prec(int prec);
+    void solve_amc_mpreal(int, double*, int, double*, double*, double*, 
+            double*, double*);
+#endif
 }
 
 #ifdef __cplusplus

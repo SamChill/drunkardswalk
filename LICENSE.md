@@ -21,7 +21,8 @@ Drunkard's Walk is licensed under the MIT License:
 > OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 > WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-External libraries, include their own licenses:
+Redistributed external libraries include their own licenses:
 
 - [Eigen](http://eigen.tuxfamily.org/)
 - [QD](http://crd-legacy.lbl.gov/~dhbailey/mpdist/)
+- [MPFRC++](http://www.holoborodko.com/pavel/mpfr/)

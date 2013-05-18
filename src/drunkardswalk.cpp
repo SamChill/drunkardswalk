@@ -3,6 +3,10 @@
 #include <qd/dd_real.h>
 #include <qd/qd_real.h>
 
+#ifdef USE_MPREAL
+#include "mpreal.h"
+#endif
+
 void solve_amc_float(int Qsize, double *Qflat, int Rcols, double *Rflat, 
                   double *c_in, double *B, double *t, double *residual) {
     solve_amc<float>(Qsize, Qflat, Rcols, Rflat, c_in, B, t, residual);
@@ -32,3 +36,14 @@ void solve_amc_qdreal(int Qsize, double *Qflat, int Rcols, double *Rflat,
     solve_amc<qd_real>(Qsize, Qflat, Rcols, Rflat, c_in, B, t, residual);
     fpu_fix_end(&oldcw);
 }
+
+#ifdef USE_MPREAL
+void set_mpreal_prec(int prec) {
+    mpfr_set_default_prec(prec);
+}
+
+void solve_amc_mpreal(int Qsize, double *Qflat, int Rcols, double *Rflat, 
+                  double *c_in, double *B, double *t, double *residual) {
+    solve_amc<mpfr::mpreal>(Qsize, Qflat, Rcols, Rflat, c_in, B, t, residual);
+}
+#endif

@@ -1,1 +1,1 @@
-from drunkardswalk import solve_amc
+from drunkardswalk import *

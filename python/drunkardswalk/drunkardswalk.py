@@ -8,6 +8,8 @@ from os import environ
 from os.path import join, abspath, dirname, isfile
 import signal
 
+__all__ = ['MPREAL_SUPPORT', 'solve_amc']
+
 libpath = None
 if 'DRUNKARDSWALK_LIB' in environ:
     #env var takes precidence
@@ -28,36 +30,51 @@ if libpath == None:
     stderr.write('       or set the environment variable DRUNKARDSWALK_LIB\n')
     exit(1)
 
-libmcamc = ctypes.CDLL(libpath)
+libdw = ctypes.CDLL(libpath)
 
-def solve_amc(Q, R, c, prec='dd'):
-    #make control-c work when calling c code
-    old_handler = signal.signal(signal.SIGINT, signal.SIG_DFL)
+MPREAL_SUPPORT = True
+try:
+    getattr(libdw, 'solve_amc_mpreal')
+except AttributeError:
+    MPREAL_SUPPORT = False
 
+def solve_amc(Q, R, c, prec='dd', mpreal_prec=512):
 
     if prec == 'f':
-        solve = libmcamc.solve_amc_float
+        solve = libdw.solve_amc_float
     elif prec == 'd':
-        solve = libmcamc.solve_amc_double
+        solve = libdw.solve_amc_double
     elif prec == 'dd':
-        solve = libmcamc.solve_amc_ddreal
+        solve = libdw.solve_amc_ddreal
     elif prec == 'qd':
-        solve = libmcamc.solve_amc_qdreal
+        solve = libdw.solve_amc_qdreal
+    elif prec == 'mp':
+        if MPREAL_SUPPORT == False:
+            msg =  "Drunkard's Walk not compiled with mpreal support\n"
+            msg += 'recompile library with "make USE_MPREAL=1"'
+            raise ValueError(msg)
+        libdw.set_mpreal_prec(mpreal_prec)
+        solve = libdw.solve_amc_mpreal
     else:
         raise ValueError('Unknown prec value "%s"' % prec)
     # void solve(int Qsize, double *Qflat, int Rcols, double *Rflat, 
     #           double *c_in, double *B, double *t, double *residual)
-    B = np.zeros((Q.shape[0],R.shape[1]))
-    t = np.zeros(c.shape)
+    ntrans = Q.shape[0]
+    nabs = R.shape[1]
+    B = np.zeros((ntrans,nabs))
+    t = np.zeros(ntrans)
     residual = np.zeros(1)
 
     c_ptr = ndpointer(dtype=np.float64,flags=('C_CONTIGUOUS','WRITEABLE'))
     solve.argtypes = [ctypes.c_int, c_ptr, ctypes.c_int, c_ptr,
             c_ptr, c_ptr, c_ptr, c_ptr]
 
-    solve(Q.shape[0], Q, R.shape[1], R, c, B, t, residual)
+    #make control-c work when calling c code
+    old_handler = signal.signal(signal.SIGINT, signal.SIG_DFL)
+
+    solve(ntrans, Q, nabs, R, c, B, t, residual)
     
-    #reset signal handler
+    #reset signal handler back to previous value
     old_handler = signal.signal(signal.SIGINT, old_handler)
 
     return t, B, residual
