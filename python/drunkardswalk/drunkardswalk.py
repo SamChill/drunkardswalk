@@ -47,7 +47,7 @@ def solve_amc(Q, R, c, prec='dd'):
         raise ValueError('Unknown prec value "%s"' % prec)
     # void solve(int Qsize, double *Qflat, int Rcols, double *Rflat, 
     #           double *c_in, double *B, double *t, double *residual)
-    B = np.zeros(R.shape)
+    B = np.zeros((Q.shape[0],R.shape[1]))
     t = np.zeros(c.shape)
     residual = np.zeros(1)
 
