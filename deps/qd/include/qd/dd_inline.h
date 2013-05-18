@@ -220,6 +220,14 @@ inline dd_real operator*(const dd_real &a, double b) {
   return dd_real(p1, p2);
 }
 
+inline dd_real operator*(long a, const dd_real &b) {
+    return dd_real(a)*b;
+}
+
+inline dd_real operator*(const dd_real &b, long a) {
+    return a*b;
+}
+
 /* double-double * double-double */
 inline dd_real operator*(const dd_real &a, const dd_real &b) {
   double p1, p2;

@@ -69,6 +69,10 @@ struct QD_API dd_real {
     x[0] = (static_cast<double>(h));
     x[1] = 0.0;
   }
+  dd_real(long h) {
+    x[0] = (static_cast<double>(h));
+    x[1] = 0.0;
+  }
 
   dd_real (const char *s);
   explicit dd_real (const double *d) {
@@ -198,6 +202,8 @@ QD_API dd_real operator-(const dd_real &a, const dd_real &b);
 
 QD_API dd_real operator*(const dd_real &a, double b);
 QD_API dd_real operator*(double a, const dd_real &b);
+QD_API dd_real operator*(long a, const dd_real &b);
+QD_API dd_real operator*(const dd_real &b, long a);
 QD_API dd_real operator*(const dd_real &a, const dd_real &b);
 
 QD_API dd_real operator/(const dd_real &a, double b);

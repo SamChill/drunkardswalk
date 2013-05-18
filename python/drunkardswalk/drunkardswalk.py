@@ -64,17 +64,25 @@ def solve_amc(Q, R, c, prec='dd', mpreal_prec=512):
     B = np.zeros((ntrans,nabs))
     t = np.zeros(ntrans)
     residual = np.zeros(1)
+    singular = ctypes.c_int()
 
-    c_ptr = ndpointer(dtype=np.float64,flags=('C_CONTIGUOUS','WRITEABLE'))
-    solve.argtypes = [ctypes.c_int, c_ptr, ctypes.c_int, c_ptr,
-            c_ptr, c_ptr, c_ptr, c_ptr]
+    d_ptr = ndpointer(dtype=np.float64,flags=('C_CONTIGUOUS','WRITEABLE'))
+    solve.argtypes = [ctypes.c_int, d_ptr, ctypes.c_int, d_ptr,
+            d_ptr, d_ptr, d_ptr, d_ptr, ctypes.POINTER(ctypes.c_int)]
 
     #make control-c work when calling c code
     old_handler = signal.signal(signal.SIGINT, signal.SIG_DFL)
 
-    solve(ntrans, Q, nabs, R, c, B, t, residual)
-    
+    solve(ntrans, Q, nabs, R, c, B, t, residual, ctypes.byref(singular))
+
     #reset signal handler back to previous value
     old_handler = signal.signal(signal.SIGINT, old_handler)
 
-    return t, B, residual
+    residual = residual[0]
+
+    if singular.value == 1:
+        singular = True
+    else:
+        singular = False
+
+    return t, B, residual, singular

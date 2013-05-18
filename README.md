@@ -82,16 +82,16 @@ Performance Benchmark
 
 The wall clock time to for solving an absorbing Markov chain with N transient
 states and 50 absorbing states is listed in the table below. This timing data
-was produced from the `performance.py` test script.  The following timing data
-were produced on a 2.8GHz Intel Core 2 Duo using a single thread.
+was produced from the `tests/performance.py` test script.  The following timing
+data were produced on a 2.8GHz Intel Core 2 Duo using a single thread.
 
 |        N |    float |   double |  dd_real |  qd_real |   mpreal |
 |:--------:| --------:| --------:| --------:| --------:| --------:|
-|       10 |   0.0003 |   0.0002 |   0.0004 |   0.0016 |   0.0083 |
-|      100 |   0.0009 |   0.0011 |   0.0183 |   0.1766 |   1.1042 |
-|      200 |   0.0025 |   0.0039 |   0.0937 |   0.9311 |   5.7583 |
-|      500 |   0.0181 |   0.0356 |   0.9909 |  10.5270 |  66.3824 |
-|      800 |   0.3036 |   0.4350 |   3.8188 |  38.7209 | 249.5223 |
+|       10 |   0.0003 |   0.0002 |   0.0004 |   0.0015 |   0.0084 |
+|      100 |   0.0013 |   0.0016 |   0.0168 |   0.1539 |   1.0164 |
+|      200 |   0.0061 |   0.0080 |   0.0908 |   0.8232 |   5.5182 |
+|      500 |   0.0864 |   0.1026 |   1.0912 |   9.9111 |  62.0800 |
+|      800 |   0.3453 |   0.4596 |   4.6514 |  39.7816 | 215.9577 |
 
 Python API
 ----------
@@ -99,22 +99,23 @@ Python API
 There is just one function provided by the Python bindings:
 
 ```python
-t, B = drunkardswalk.solve_amc(Q, R, c, prec='dd', mpreal_prec=512)
+from drunkardswalk import solve_amc
+t, B, residual, singular = solve_amc(Q, R, c, prec='dd', mpreal_prec=512)
 ```
 
-`Q` is a t by t NumPy array of relative transition probabilities
+`Q`: is a t by t NumPy array of relative transition probabilities
 between transient states, where t is the number transient states.
 
-`R` is a t by r NumPy array of relative absorption probabilities
+`R`: is a t by r NumPy array of relative absorption probabilities
 from the transient states to the absorbing states, where r is
 the number of absorbing states. 
 
-`c` is a Numpy array of length
+`c`: is a NumPy array of length
 t that represents the average time spent in each transient states.
 This could be a vector of ones if one wants to solve for the expected
 number of times the chain is in each transient state. 
 
-`prec` is a string that represents the floating point precision that will
+`prec`: is a string that represents the floating point precision that will
 be used to solve the problem. The options are `f`, `d`, `dd`, and `qd`,
 which correspond to single, double, double double, and quad double
 precision respectively. If the library has been compiled with
@@ -122,14 +123,17 @@ precision respectively. If the library has been compiled with
 This corresponds to an arbitrary precision type whose precision
 can be specified at runtime.
 
-`mpreal_prec` is the number of bits used to represent the significand 
+`mpreal_prec`: is the number of bits used to represent the significand 
 when using the `mp` precision type.
 
 The function returns a NumPy array of length t that represents the
 expected amount of time spent in each state and a t by r NumPy
 array of absorption probabilities, where the i,j entry is the
 probability of being absorbed into state j if the chain states in 
-state i.
+state i. It also returns the relative residual error in the solution
+for the absorption times and whether or not the linear system
+of equations is singular. If singular is `True`, the answer cannot
+be trusted to any level of precision regarless of the residual.
 
 Example
 -------

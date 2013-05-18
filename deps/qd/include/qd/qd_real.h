@@ -67,6 +67,7 @@ struct QD_API qd_real {
   qd_real(const dd_real &dd);
   qd_real(double d);
   qd_real(int i);
+  qd_real(long i);
 
   double operator[](int i) const;
   double &operator[](int i);
@@ -183,6 +184,8 @@ QD_API qd_real operator*(const dd_real &a, const qd_real &b);
 QD_API qd_real operator*(const qd_real &a, const dd_real &b);
 QD_API qd_real operator*(const qd_real &a, double b);
 QD_API qd_real operator*(double a, const qd_real &b);
+QD_API qd_real operator*(long a, const qd_real &b);
+QD_API qd_real operator*(const qd_real &b, long a);
 
 QD_API qd_real operator/(const qd_real &a, const qd_real &b);
 QD_API qd_real operator/(const dd_real &a, const qd_real &b);

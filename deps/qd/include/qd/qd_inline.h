@@ -58,6 +58,11 @@ inline qd_real::qd_real(int i) {
   x[1] = x[2] = x[3] = 0.0;
 }
 
+inline qd_real::qd_real(long i) {
+  x[0] = static_cast<double>(i);
+  x[1] = x[2] = x[3] = 0.0;
+}
+
 /********** Accessors **********/
 inline double qd_real::operator[](int i) const {
   return x[i];
@@ -477,6 +482,14 @@ inline qd_real &qd_real::operator-=(const qd_real &a) {
 
 inline qd_real operator*(double a, const qd_real &b) {
   return (b * a);
+}
+
+inline qd_real operator*(long a, const qd_real &b) {
+  return (b * qd_real(a));
+}
+
+inline qd_real operator*(const qd_real &b, long a) {
+  return a*b;
 }
 
 inline qd_real operator*(const dd_real &a, const qd_real &b) {

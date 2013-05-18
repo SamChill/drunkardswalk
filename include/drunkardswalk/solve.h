@@ -3,24 +3,27 @@
 
 extern "C" {
     void solve_amc_float(int, double*, int, double*, double*, double*, 
-            double*, double*);
+            double*, double*, int*);
     void solve_amc_double(int, double*, int, double*, double*, double*, 
-            double*, double*);
+            double*, double*, int*);
     void solve_amc_ddreal(int, double*, int, double*, double*, 
-            double*, double*, double*);
+            double*, double*, double*, int*);
     void solve_amc_qdreal(int, double*, int, double*, double*, double*, 
-            double*, double*);
+            double*, double*, int*);
 #ifdef USE_MPREAL
     void set_mpreal_prec(int prec);
     void solve_amc_mpreal(int, double*, int, double*, double*, double*, 
-            double*, double*);
+            double*, double*, int*);
 #endif
 }
 
 #ifdef __cplusplus
 #include <Eigen/Dense>
+#include <iostream>
+
 template<typename scalar> void solve_amc(int Qsize, double* Qflat, int Rcols, 
-        double* Rflat, double* c_in, double* B, double* t, double* residual)
+        double* Rflat, double* c_in, double* B, double* t, double* residual,
+        int* singular)
 {
     using namespace Eigen;
     typedef Matrix<scalar,Dynamic,Dynamic> MatrixXdd;
@@ -56,12 +59,16 @@ template<typename scalar> void solve_amc(int Qsize, double* Qflat, int Rcols,
     A.setIdentity();
     A = A - Q;
 
-    PartialPivLU<MatrixXdd> lu = A.partialPivLu();
+    FullPivLU<MatrixXdd> lu(A);
+    *singular = (int)!lu.isInvertible();
 
     VectorXdd t_calc = lu.solve(c);
     MatrixXdd B_calc = lu.solve(R);
 
-    *residual = (double)(A*t_calc-c).array().abs().maxCoeff();
+    // Calculate the relative residual
+    scalar res =  (A*t_calc-c).template lpNorm<Infinity>()/
+            c.template lpNorm<Infinity>();
+    *residual = (double)res;
 
     // Store the solution t_calc into the array t.
     for (i = 0; i < Qsize; i++) {

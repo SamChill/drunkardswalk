@@ -24,7 +24,7 @@ def main():
 
     print 'PERFORMANCE TESTS'
     print '-----------------'
-    print 'Generating a random chain with N transient states ',
+    print 'Generating a random chain with N transient states',
     print 'and 50 absorbing states'
     print 'times are in seconds\n'
 
@@ -50,7 +50,7 @@ def main():
             Nabs = 50
             Q,R,c = random_chain(Ntrans,Nabs,p)
             t1 = time()
-            t, B, res = solve_amc(Q,R,c,prec, mpreal_prec=512)
+            t, B, res, singular = solve_amc(Q,R,c,prec, mpreal_prec=512)
             t2 = time()
             times.append(t2-t1)
         if MPREAL_SUPPORT:

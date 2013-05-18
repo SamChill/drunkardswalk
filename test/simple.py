@@ -21,15 +21,7 @@ def dw(n):
     c = numpy.ones(3)
     return Q,R,c
 
-def soln(n):
-    B = [ [.5+.5/n, .5-.5/n],
-          [.5, .5],
-          [0.5-.5/n, .5+.5/n]]
-    return numpy.array(B)
-
 def main():
-    n=64
-    Q,R,c = dw(n)
 
     failures = 0
 
@@ -40,17 +32,33 @@ def main():
         precs.append('mp')
 
     tol = {'f':1e-5,'d':1e-10,'dd':1e-20,'qd':1e-40,'mp':1e-80}
+    difficulty_factor = {'f':1e3,'d':1e8,'dd':1e28,'qd':1e40,'mp':1e80}
 
     for prec in precs:
         print 'testing %s:' % prec_to_name[prec]
-        t, B, res = solve_amc(Q,R,c,prec,mpreal_prec=512)
-        residual = numpy.max(numpy.abs(B-soln(n)))
-        if res > tol[prec] or not numpy.isfinite(res):
-            print '        residual: %.3e > %.3e' % (residual, tol[prec])
-            print '        test failed'
+        n = difficulty_factor[prec]
+        Q,R,c = dw(n)
+        t, B, res, singular = solve_amc(Q,R,c,prec,mpreal_prec=512)
+        print '        tolerance: %.3e' % tol[prec]
+        print '        residual: %.3e'  % res
+        failure = False
+
+        if res > tol[prec]:
+            failure = True
+            print '        residual greater than tolerance'
             failures += 1
+
+        if singular:
+            print '        I-Q is singular'
+            failure = True
+
+        #if numpy.max(numpy.abs(B-soln(n))) > tol[prec]:
+        #    print '        incorrect solution'
+        #    failure = True
+
+        if failure:
+            print '        test failed'
         else:
-            print '        residual: %.3e < %.3e' % (residual, tol[prec])
             print '        test passed'
 
     print 'ran %i tests' % len(precs)
