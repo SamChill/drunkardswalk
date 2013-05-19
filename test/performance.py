@@ -39,12 +39,13 @@ def main():
         print '|:%8s:| %8s:| %8s:| %8s:| %8s:|' % \
                 ( 8*'-', 8*'-', 8*'-', 8*'-', 8*'-',)
 
-    precs = ['f','d','dd','qd']
+    precs = ['f','d','dd']
     if MPREAL_SUPPORT:
         precs.append('mp')
 
-    for Ntrans in [10,100,200,500,800]:
+    for Ntrans in [10,100,200,500,800,3000]:
         times = []
+        print '| %8i |' % Ntrans,
         for prec in precs:
             p = 1e-5
             Nabs = 50
@@ -52,12 +53,8 @@ def main():
             t1 = time()
             t, B, res, singular = solve_amc(Q,R,c,prec, mpreal_prec=512)
             t2 = time()
-            times.append(t2-t1)
-        if MPREAL_SUPPORT:
-            fmt = '| %8i | %8.4f | %8.4f | %8.4f | %8.4f | %8.4f |'
-            print  fmt % (Ntrans,times[0],times[1],times[2],times[3], times[4])
-        else:
-            fmt = '| %8i | %8.4f | %8.4f | %8.4f | %8.4f |'
-            print  fmt % (Ntrans,times[0],times[1],times[2],times[3])
+            print ' %7.4f |' % (t2-t1),
+            sys.stdout.flush()
+        print
 
 main()
