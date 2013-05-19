@@ -100,6 +100,17 @@ thread.
 |      500 |   0.0301 |   0.0439 |   1.1355 |  11.9715 |  64.7225 |
 |      800 |   0.0602 |   0.1065 |   3.6915 |  39.6592 | 247.9850 |
 
+Here is a table of the number of decimal digits of precision in the signifcand 
+of the different data types used in the performance test.
+
+| data type |  decimal digits |
+|:---------:|:--------------- |
+|     float |               7 |
+|    double |              16 |
+|   dd_real |              32 |
+|   qd_real |              64 |
+|   mp_real | 154 (arbitrary) |
+
 Python API
 ----------
 
