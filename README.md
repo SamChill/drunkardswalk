@@ -16,10 +16,14 @@ range from atomic vibrational periods (femtoseconds) to the age of the universe
 The main feature of the library is that it supports extended precision floating
 point arithmetic using the [QD library][qd] developed by David H. Bailey et
 al., which supports double double (~32 decimal digits) and quad double (~64
-decimal digits) floating point types. The reason for using QD instead of an
-arbitrary precision math library, is that QD is very fast. By using these
-extended precision types, one is able to accurately solve problems where the
-absorption probabilities are vanishingly small.
+decimal digits) floating point types. These extended precision types are much
+faster than arbitrary precision arthemtic and should be sufficient for most
+problems.
+
+Arbitrary precision is also supported using [MPFRC++][mpfrc++], which is
+developed by Pavel Holoborodko.  By using these extended precision types, one
+is able to accurately solve problems where the absorption probabilities are
+vanishingly small.
 
 The core of the code is written using [Eigen][eigen], which is a C++ template
 library for linear algebra. As it is a template library, it supports working
@@ -30,6 +34,7 @@ types in QD.
 [randomwalk]: http://en.wikipedia.org/wiki/Random_walk
 [eon]: http://theory.cm.utexas.edu/eon/
 [qd]: http://crd-legacy.lbl.gov/~dhbailey/mpdist/
+[mpfrc++]: http://www.holoborodko.com/pavel/mpfr/
 [eigen]: http://eigen.tuxfamily.org/
 
 Installation
@@ -82,16 +87,18 @@ Performance Benchmark
 
 The wall clock time to for solving an absorbing Markov chain with N transient
 states and 50 absorbing states is listed in the table below. This timing data
-was produced from the `tests/performance.py` test script.  The following timing
-data were produced on a 2.8GHz Intel Core 2 Duo using a single thread.
+was produced from the `tests/performance.py` test script and is intended to
+give an idea about the relative performance of the different data types. The
+following timing data were produced on a 2.8GHz Intel Core 2 Duo using a single
+thread.
 
 |        N |    float |   double |  dd_real |  qd_real |   mpreal |
 |:--------:| --------:| --------:| --------:| --------:| --------:|
-|       10 |   0.0003 |   0.0002 |   0.0004 |   0.0015 |   0.0084 |
-|      100 |   0.0013 |   0.0016 |   0.0168 |   0.1539 |   1.0164 |
-|      200 |   0.0061 |   0.0080 |   0.0908 |   0.8232 |   5.5182 |
-|      500 |   0.0864 |   0.1026 |   1.0912 |   9.9111 |  62.0800 |
-|      800 |   0.3453 |   0.4596 |   4.6514 |  39.7816 | 215.9577 |
+|       10 |   0.0004 |   0.0002 |   0.0004 |   0.0016 |   0.0083 |
+|      100 |   0.0009 |   0.0011 |   0.0181 |   0.1768 |   1.0971 |
+|      200 |   0.0025 |   0.0038 |   0.0932 |   0.9876 |   5.8999 |
+|      500 |   0.0301 |   0.0439 |   1.1355 |  11.9715 |  64.7225 |
+|      800 |   0.0602 |   0.1065 |   3.6915 |  39.6592 | 247.9850 |
 
 Python API
 ----------
@@ -103,12 +110,16 @@ from drunkardswalk import solve_amc
 t, B, residual, singular = solve_amc(Q, R, c, prec='dd', mpreal_prec=512)
 ```
 
-`Q`: is a t by t NumPy array of relative transition probabilities
-between transient states, where t is the number transient states.
+`Q`: is a t by t array of transition probabilities between transient states,
+where t is the number transient states.
 
-`R`: is a t by r NumPy array of relative absorption probabilities
-from the transient states to the absorbing states, where r is
-the number of absorbing states. 
+`R`: is a t by r array of absorption probabilities from the transient states to
+the absorbing states, where r is the number of absorbing states. 
+
+Both `Q` and `R` may contain unnormalized probabilities. The normalization
+will be carried out in the precision specified by `prec`. All arrays
+passed must be numpy arrays using double precision (`numpy.float64`),
+which is the default for most NumPy arrays.
 
 `c`: is a NumPy array of length
 t that represents the average time spent in each transient states.

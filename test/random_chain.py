@@ -11,6 +11,7 @@ environ['DRUNKARDSWALK_LIB'] = \
 from drunkardswalk import *
 
 def random_chain(t,r,p):
+    numpy.random.seed(42)
     Q = numpy.random.random((t,t))
     for i in xrange(len(Q)):
         Q[i,i] = 0.0

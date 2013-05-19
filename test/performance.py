@@ -11,6 +11,7 @@ environ['DRUNKARDSWALK_LIB'] = \
 from drunkardswalk import *
 
 def random_chain(t,r,p):
+    numpy.random.seed(42)
     Q = numpy.random.random((t,t))
     for i in xrange(len(Q)):
         Q[i,i] = 0.0
@@ -53,7 +54,7 @@ def main():
             t1 = time()
             t, B, res = solve_amc(Q,R,c,prec, mpreal_prec=512)
             t2 = time()
-            print ' %7.4f |' % (t2-t1),
+            print '%8.4f |' % (t2-t1),
             sys.stdout.flush()
         print
 
