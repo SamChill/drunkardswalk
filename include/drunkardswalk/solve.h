@@ -59,11 +59,25 @@ template<typename scalar> void solve_amc(int Qsize, double* Qflat, int Rcols,
     A.setIdentity();
     A = A - Q;
 
-    FullPivLU<MatrixXdd> lu(A);
-    *singular = (int)!lu.isInvertible();
+    VectorXdd t_calc;
+    MatrixXdd B_calc;
 
-    VectorXdd t_calc = lu.solve(c);
-    MatrixXdd B_calc = lu.solve(R);
+    if (*singular == 1) {
+        //Use LU w/ full pivoting, this is very expensive for a large number of
+        //transient states.
+        //This is a rank revealing decomposition that can determine if the
+        //matrix is singular within the working precision for "scalar".
+        FullPivLU<MatrixXdd> lu(A);
+        *singular = (int)!lu.isInvertible();
+        t_calc = lu.solve(c);
+        B_calc = lu.solve(R);
+    }else{
+        PartialPivLU<MatrixXdd> lu(A);
+        *singular = 0;
+        t_calc = lu.solve(c);
+        B_calc = lu.solve(R);
+    }
+
 
     // Calculate the relative residual
     scalar res =  (A*t_calc-c).template lpNorm<Infinity>()/

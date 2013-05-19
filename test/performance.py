@@ -39,7 +39,7 @@ def main():
         print '|:%8s:| %8s:| %8s:| %8s:| %8s:|' % \
                 ( 8*'-', 8*'-', 8*'-', 8*'-', 8*'-',)
 
-    precs = ['f','d','dd']
+    precs = ['f','d','dd','qd']
     if MPREAL_SUPPORT:
         precs.append('mp')
 
@@ -51,7 +51,7 @@ def main():
             Nabs = 50
             Q,R,c = random_chain(Ntrans,Nabs,p)
             t1 = time()
-            t, B, res, singular = solve_amc(Q,R,c,prec, mpreal_prec=512)
+            t, B, res = solve_amc(Q,R,c,prec, mpreal_prec=512)
             t2 = time()
             print ' %7.4f |' % (t2-t1),
             sys.stdout.flush()

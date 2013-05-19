@@ -38,7 +38,7 @@ def main():
         print 'testing %s:' % prec_to_name[prec]
         n = difficulty_factor[prec]
         Q,R,c = dw(n)
-        t, B, res, singular = solve_amc(Q,R,c,prec,mpreal_prec=512)
+        t, B, res, singular = solve_amc(Q,R,c,prec,mpreal_prec=512,fullpiv=True)
         print '        tolerance: %.3e' % tol[prec]
         print '        residual: %.3e'  % res
         failure = False

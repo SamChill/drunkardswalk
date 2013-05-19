@@ -56,7 +56,7 @@ def main():
         print '| %2.0e |'%p,
         for prec in precs:
             Q,R,c = random_chain(Ntrans,Nabs,p)
-            t, B, res, singular = solve_amc(Q,R,c,prec,mpreal_prec=512)
+            t, B, res, singular = solve_amc(Q,R,c,prec,mpreal_prec=512, fullpiv=True)
             if not singular:
                 print ' %-9.0e |' % res,
             else:

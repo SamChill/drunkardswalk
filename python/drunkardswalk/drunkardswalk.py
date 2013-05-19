@@ -38,7 +38,7 @@ try:
 except AttributeError:
     MPREAL_SUPPORT = False
 
-def solve_amc(Q, R, c, prec='dd', mpreal_prec=512):
+def solve_amc(Q, R, c, prec='dd', mpreal_prec=512, fullpiv=False):
 
     if prec == 'f':
         solve = libdw.solve_amc_float
@@ -63,26 +63,36 @@ def solve_amc(Q, R, c, prec='dd', mpreal_prec=512):
     nabs = R.shape[1]
     B = np.zeros((ntrans,nabs))
     t = np.zeros(ntrans)
-    residual = np.zeros(1)
+    residual = ctypes.c_double()
     singular = ctypes.c_int()
+    if fullpiv:
+        singular.value = 1
+    else:
+        singular.value = 0
+
 
     d_ptr = ndpointer(dtype=np.float64,flags=('C_CONTIGUOUS','WRITEABLE'))
     solve.argtypes = [ctypes.c_int, d_ptr, ctypes.c_int, d_ptr,
-            d_ptr, d_ptr, d_ptr, d_ptr, ctypes.POINTER(ctypes.c_int)]
+            d_ptr, d_ptr, d_ptr, ctypes.POINTER(ctypes.c_double), 
+            ctypes.POINTER(ctypes.c_int)]
 
     #make control-c work when calling c code
     old_handler = signal.signal(signal.SIGINT, signal.SIG_DFL)
 
-    solve(ntrans, Q, nabs, R, c, B, t, residual, ctypes.byref(singular))
+    solve(ntrans, Q, nabs, R, c, B, t, ctypes.byref(residual), 
+            ctypes.byref(singular))
 
     #reset signal handler back to previous value
     old_handler = signal.signal(signal.SIGINT, old_handler)
 
-    residual = residual[0]
+    residual = residual.value
 
     if singular.value == 1:
         singular = True
     else:
         singular = False
 
-    return t, B, residual, singular
+    if fullpiv:
+        return t, B, residual, singular
+    else:
+        return t, B, residual
