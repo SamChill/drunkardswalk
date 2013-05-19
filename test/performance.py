@@ -43,7 +43,7 @@ def main():
     if MPREAL_SUPPORT:
         precs.append('mp')
 
-    for Ntrans in [10,100,200,500,800,3000]:
+    for Ntrans in [10,100,200,500,800]:
         times = []
         print '| %8i |' % Ntrans,
         for prec in precs:
