@@ -161,3 +161,14 @@ API Documentation
 -----------------
 
 The complete API documentation is located in [API.md](API.md).
+
+Markov Chain Theory
+-------------------
+
+The book "[Introduction to Probability][book]" by Charles M. Grinstead and 
+J. Laurie Snell contains an excellent introduction to Markov chains. 
+They have graciously licensed their textbook under the GNU FDL license
+and chapter 11 is included here:  [docs/AbsorbingMarkovChains.pdf][chapter11]
+
+[book]: http://www.dartmouth.edu/~chance/teaching_aids/books_articles/probability_book/book.html
+[chapter11]: docs/AbsorbingMarkovChains.pdf?raw=true
