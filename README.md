@@ -111,52 +111,6 @@ of the different data types used in the performance test.
 |   qd_real |              64 |
 |   mp_real | 154 (arbitrary) |
 
-Python API
-----------
-
-There is just one function provided by the Python bindings:
-
-```python
-from drunkardswalk import solve_amc
-t, B, residual, singular = solve_amc(Q, R, c, prec='dd', mpreal_prec=512)
-```
-
-`Q`: is a t by t array of transition probabilities between transient states,
-where t is the number transient states.
-
-`R`: is a t by r array of absorption probabilities from the transient states to
-the absorbing states, where r is the number of absorbing states. 
-
-Both `Q` and `R` may contain unnormalized probabilities. The normalization
-will be carried out in the precision specified by `prec`. All arrays
-passed must be numpy arrays using double precision (`numpy.float64`),
-which is the default for most NumPy arrays.
-
-`c`: is a NumPy array of length
-t that represents the average time spent in each transient states.
-This could be a vector of ones if one wants to solve for the expected
-number of times the chain is in each transient state. 
-
-`prec`: is a string that represents the floating point precision that will
-be used to solve the problem. The options are `f`, `d`, `dd`, and `qd`,
-which correspond to single, double, double double, and quad double
-precision respectively. If the library has been compiled with
-`make USE_MPREAL=1` then an addition option is available: `mp`.
-This corresponds to an arbitrary precision type whose precision
-can be specified at runtime.
-
-`mpreal_prec`: is the number of bits used to represent the significand 
-when using the `mp` precision type.
-
-The function returns a NumPy array of length t that represents the
-expected amount of time spent in each state and a t by r NumPy
-array of absorption probabilities, where the i,j entry is the
-probability of being absorbed into state j if the chain states in 
-state i. It also returns the relative residual error in the solution
-for the absorption times and whether or not the linear system
-of equations is singular. If singular is `True`, the answer cannot
-be trusted to any level of precision regarless of the residual.
-
 Example
 -------
 
@@ -202,3 +156,8 @@ absorption probabilities:
  [ 0.5   0.5 ]
  [ 0.25  0.75]]
 ```
+
+API Documentation
+-----------------
+
+The complete API documentation is located in [API.md](api.md).
