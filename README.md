@@ -43,8 +43,7 @@ Installation
 ------------
 
 Drunkard's walk requires GNU Make and a C++ compiler. It currently has been
-tested with the GNU (>=4.1) and Intel C++ compilers (version
-13).
+tested with the GNU (>=4.1) and Intel (version 13) C++ compilers.
 
 Compiling the library should be as simple as running `make`. The top level
 makefile can be edited to use different compilers or compiler options.
