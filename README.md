@@ -160,4 +160,4 @@ absorption probabilities:
 API Documentation
 -----------------
 
-The complete API documentation is located in [API.md](api.md).
+The complete API documentation is located in [API.md](API.md).
