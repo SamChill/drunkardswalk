@@ -21,7 +21,9 @@ faster than arbitrary precision arthemtic and should be sufficient for most
 problems.
 
 Arbitrary precision is also supported using [MPFRC++][mpfrc++], which is
-developed by Pavel Holoborodko.  By using these extended precision types, one
+developed by Pavel Holoborodko. 
+
+By using these extended precision types, one
 is able to accurately solve problems where the absorption probabilities are
 vanishingly small.
 
