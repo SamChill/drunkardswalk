@@ -1,4 +1,7 @@
-.PHONY:simple all performance random
+.PHONY:simple all performance random 
+
+CPPFLAGS+=-I../deps/eigen -I../include
+
 simple:
 	python simple.py
 
