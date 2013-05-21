@@ -415,6 +415,12 @@ inline dd_real dd_real::operator^(int n) {
 }
 
 
+inline dd_real &dd_real::operator=(int a) {
+  x[0] = (double) a;
+  x[1] = 0.0;
+  return *this;
+}
+
 /*********** Assignments ************/
 /* double-double = double */
 inline dd_real &dd_real::operator=(double a) {

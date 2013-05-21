@@ -111,6 +111,7 @@ struct QD_API qd_real {
 
   qd_real operator-() const;
 
+  qd_real &operator=(int a);
   qd_real &operator=(double a);
   qd_real &operator=(const dd_real &a);
   qd_real &operator=(const char *s);

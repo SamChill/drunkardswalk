@@ -133,6 +133,7 @@ struct QD_API dd_real {
   dd_real &operator/=(double a);
   dd_real &operator/=(const dd_real &a);
 
+  dd_real &operator=(int a);
   dd_real &operator=(double a);
   dd_real &operator=(const char *s);
 

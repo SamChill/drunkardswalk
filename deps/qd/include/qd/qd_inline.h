@@ -817,6 +817,11 @@ inline qd_real quick_nint(const qd_real &a) {
 }
 
 /*********** Assignments ************/
+inline qd_real &qd_real::operator=(int a) {
+  x[0] = (double)a;
+  x[1] = x[2] = x[3] = 0.0;
+  return *this;
+}
 /* quad-double = double */
 inline qd_real &qd_real::operator=(double a) {
   x[0] = a;
